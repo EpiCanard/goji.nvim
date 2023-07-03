@@ -1,5 +1,5 @@
 local http = require("goji.request.http")
-local user_queries = require("goji.queries.user")
+local user_queries = require("goji.request.queries.user")
 local log = require("goji.log")
 local M = {}
 
