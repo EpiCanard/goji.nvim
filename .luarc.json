@@ -76,6 +76,7 @@
         "/Users/ndelahaigue/.local/share/nvim/lazy/vim-dadbod-completion/after",
         "/Users/ndelahaigue/.config/nvim/after",
         "/Users/ndelahaigue/.local/state/nvim/lazy/readme",
-        "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "${3rd}/luv/library"
     ]
 }
