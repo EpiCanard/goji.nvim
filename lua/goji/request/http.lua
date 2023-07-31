@@ -7,7 +7,21 @@ local function parse_url(host)
   return "https://" .. host .. "/gateway/api/graphql"
 end
 
-function M.graphql(host, query, variables)
+local function vars(variables, config)
+  local result = {}
+  for k, v in pairs(variables) do
+    local value
+    if not v[1] then
+      value = config[k] or ""
+    else
+      value = v[1]
+    end
+    result[k] = value
+  end
+  return result
+end
+
+function M.graphql(host, query, variables, experimentals)
   local host_config = config.values.hosts[host]
   if not host or not host_config then
     return nil
@@ -20,9 +34,12 @@ function M.graphql(host, query, variables)
     },
     raw_body = vim.fn.json_encode({
       query = query,
-      variables = variables,
+      variables = vars(variables, host_config),
     }),
   }
+  if experimentals then
+    opts.headers["X-Experimentalapi"] = experimentals
+  end
   print(url)
   print(vim.inspect(opts))
   local resp = curl.post(url, opts)

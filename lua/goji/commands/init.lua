@@ -1,5 +1,6 @@
 local http = require("goji.request.http")
 local user_queries = require("goji.request.queries.user")
+local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")
 local log = require("goji.log")
 local M = {}
@@ -10,8 +11,22 @@ function M.setup()
   end, { nargs = "*" })
 
   M.commands = {
-    issue = function()
-      local status, body = http.graphql("default", user_queries.get_user_info())
+    issue = function(args)
+      if not args[1] then
+        print("Missing argument")
+        return
+      end
+      local params = {
+        type = "jira",
+        query = issue_queries.get_issue_details(),
+        name = "GetIssueDetails",
+        variables = {
+          cloudId = { type = "ID" },
+          key = { args[1], type = "String" },
+        },
+      }
+      local status, body =
+        http.graphql("default", builder.build_request(params, "default"), params.variables, "JiraIssue")
       print(status)
       log.info(vim.inspect(body))
     end,
@@ -33,13 +48,14 @@ function M.setup()
   }
 end
 
-function M.goji(subcmd)
+function M.goji(subcmd, ...)
   subcmd = subcmd or "issue"
+  local args = { ... }
 
   if not M.commands[subcmd] then
     print("Unknown command")
   else
-    M.commands[subcmd]()
+    M.commands[subcmd](args)
   end
 end
 
