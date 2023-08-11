@@ -1,5 +1,6 @@
 local issue_command = require("goji.commands.issue")
 local builder = require("goji.request.query_builder")
+local Buffer = require("goji.ui.buffer")
 local log = require("goji.log")
 local M = {}
 
@@ -47,6 +48,14 @@ function M.setup()
           key = { "AA-1111", type = "String" },
         },
       }, "default")))
+    end,
+    buf = function()
+      local buff = Buffer:new({
+        name = "Hello",
+        kind = "tabnew",
+      })
+      buff:open()
+      buff:render({ "Hello world" })
     end,
   }
 end
