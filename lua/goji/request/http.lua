@@ -8,12 +8,12 @@ local function parse_url(host)
   return "https://" .. host .. "/gateway/api/graphql"
 end
 
-local function vars(variables, config)
+local function vars(variables, conf)
   local result = {}
   for k, v in pairs(variables) do
     local value
     if not v[1] then
-      value = config[k] or ""
+      value = conf[k] or ""
     else
       value = v[1]
     end
