@@ -38,6 +38,7 @@ function Buffer:_init_buffer()
   self:set_option("buftype", "nofile")
   self:set_option("swapfile", false)
   self:set_option("bufhidden", "wipe")
+  self:set_option("filetype", self.buf_name)
 end
 
 function Buffer:render(content)

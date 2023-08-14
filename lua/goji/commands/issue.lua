@@ -39,13 +39,14 @@ return function(args)
   for s in desc:gmatch("[^\r\n]+") do
     table.insert(descs, s)
   end
-  log.info(vim.inspect(out))
   local buf = Buffer:new({
     name = "GojiIssue",
   })
   buf:open()
   buf:render({
-    "Title : " .. title,
+    "Title : ",
+    title,
+    "",
     "Description : ",
     unpack(descs),
   })

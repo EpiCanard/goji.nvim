@@ -42,7 +42,7 @@ local function call_graphql(host_config, query, variables, experimentals)
 end
 
 local function handle_result(resp)
-  local body = resp.status == 200 and vim.fn.json_decode(resp.body) or nil
+  local body = resp.status == 200 and vim.fn.json_decode(resp.body)
 
   if not body then
     log.error("Unexpected error during call of Jira : HttpStatus " .. resp.status)
