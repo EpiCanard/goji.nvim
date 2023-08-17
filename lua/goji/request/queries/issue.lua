@@ -10,6 +10,7 @@ function M.get_issue_details()
         edges {
           node {
             id
+            fieldId
             name
             type
             description

@@ -1,8 +1,7 @@
 local http = require("goji.request.http")
-local Buffer = require("goji.ui.buffer")
+local issue_view = require("goji.ui.views.issue")
 local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")
-local log = require("goji.log")
 
 local function get_jira_issue(issue_key)
   local params = {
@@ -22,7 +21,7 @@ local function get_jira_issue(issue_key)
 
   local out = {}
   for _, v in pairs(result.jira.issueByKey.fields.edges) do
-    out[v.node.name] = v.node
+    out[v.node.fieldId] = v.node
   end
   return out
 end
@@ -32,23 +31,8 @@ return function(args)
     print("Missing argument")
     return
   end
-  local out = get_jira_issue(args[1])
-  local title = out["Summary"].text
-  local desc = out["Description"].richText.adfValue.convertedPlainText.plainText
-  local descs = {}
-  for s in desc:gmatch("[^\r\n]+") do
-    table.insert(descs, s)
+  local data = get_jira_issue(args[1])
+  if data then
+    issue_view.render(data)
   end
-  local buf = Buffer:new({
-    name = "GojiIssue",
-  })
-  buf:open()
-  buf:render({
-    "Title : ",
-    title,
-    "",
-    "Description : ",
-    unpack(descs),
-  })
-  buf:lock()
 end
