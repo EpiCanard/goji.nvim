@@ -1,17 +1,25 @@
 local Buffer = require("goji.ui.buffer")
+local mapping_manager = require("goji.mapping_manager")
 
 local IssueView = {}
 IssueView.__index = IssueView
 
-function IssueView:new()
-  local view = {
-    buf = Buffer:new({
+function IssueView.new()
+  local self = {
+    buffer = Buffer:new({
       name = "GojiIssue",
     }),
+    config_category = "issue",
   }
-  setmetatable(view, self)
+  setmetatable(self, IssueView)
 
-  return view
+  self.actions = {
+    ["close"] = function()
+      self.buffer:close()
+    end,
+  }
+
+  return self
 end
 
 function IssueView.build_components(data)
@@ -23,12 +31,17 @@ function IssueView.build_components(data)
   end
 
   return {
-    "Title : ",
+    "Title :",
     title,
     "",
-    "Description : ",
+    "Description :",
     unpack(descs),
   }
+end
+
+function IssueView:open()
+  self.buffer:open()
+  mapping_manager.apply_mapping(self)
 end
 
 function IssueView:render(data)
@@ -36,9 +49,9 @@ function IssueView:render(data)
     return
   end
 
-  self.buf:open()
-  self.buf:render(IssueView.build_components(data))
-  self.buf:lock()
+  self:open()
+  self.buffer:render(IssueView.build_components(data))
+  self.buffer:lock()
 end
 
 return IssueView

@@ -27,6 +27,10 @@ function Buffer:open()
   api.nvim_set_option_value("relativenumber", false, { win = win })
 end
 
+function Buffer:close()
+  api.nvim_buf_delete(self.buf, {})
+end
+
 function Buffer:_init_buffer()
   if self.buf == nil then
     self.buf = fn.bufnr(self.buf_name)

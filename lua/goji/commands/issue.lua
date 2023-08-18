@@ -33,7 +33,7 @@ return function(args)
   end
   local data = get_jira_issue(args[1])
   if data then
-    local view = IssueView:new()
+    local view = IssueView.new()
     view:render(data)
   end
 end

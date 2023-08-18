@@ -3,6 +3,11 @@ local M = {}
 local default = {
   default_remote = "origin",
   hosts = {},
+  mappings = {
+    issue = {
+      ["q"] = "close",
+    },
+  },
 }
 
 M.values = default
