@@ -1,5 +1,5 @@
 local http = require("goji.request.http")
-local issue_view = require("goji.ui.views.issue")
+local IssueView = require("goji.ui.views.issue")
 local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")
 
@@ -33,6 +33,7 @@ return function(args)
   end
   local data = get_jira_issue(args[1])
   if data then
-    issue_view.render(data)
+    local view = IssueView:new()
+    view:render(data)
   end
 end

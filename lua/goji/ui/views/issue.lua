@@ -1,7 +1,20 @@
 local Buffer = require("goji.ui.buffer")
 
-local M = {}
-function M.build_components(data)
+local IssueView = {}
+IssueView.__index = IssueView
+
+function IssueView:new()
+  local view = {
+    buf = Buffer:new({
+      name = "GojiIssue",
+    }),
+  }
+  setmetatable(view, self)
+
+  return view
+end
+
+function IssueView.build_components(data)
   local title = data["summary"].text
   local desc = data["description"].richText.adfValue.convertedPlainText.plainText
   local descs = {}
@@ -18,17 +31,14 @@ function M.build_components(data)
   }
 end
 
-function M.render(data)
+function IssueView:render(data)
   if data == nil then
     return
   end
 
-  local buf = Buffer:new({
-    name = "GojiIssue",
-  })
-  buf:open()
-  buf:render(M.build_components(data))
-  buf:lock()
+  self.buf:open()
+  self.buf:render(IssueView.build_components(data))
+  self.buf:lock()
 end
 
-return M
+return IssueView
