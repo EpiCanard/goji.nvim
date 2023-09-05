@@ -27,6 +27,7 @@ function Buffer:open()
   local win = api.nvim_get_current_win()
   api.nvim_set_option_value("number", false, { win = win })
   api.nvim_set_option_value("relativenumber", false, { win = win })
+  api.nvim_set_option_value("colorcolumn", "0", { win = win })
 end
 
 function Buffer:close()
