@@ -50,7 +50,7 @@ function M.setup()
       }, "default")))
     end,
     buf = function()
-      local buff = Buffer:new({
+      local buff = Buffer.new({
         name = "Hello",
         kind = "tabnew",
       })

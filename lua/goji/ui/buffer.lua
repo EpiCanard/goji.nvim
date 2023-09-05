@@ -6,16 +6,16 @@ local cmd = vim.cmd
 local Buffer = {}
 Buffer.__index = Buffer
 
-function Buffer:new(config)
-  local buffer = {
+function Buffer.new(config)
+  local self = {
     buf_name = config.name,
     kind = config.kind or "tabnew",
     buf = nil,
   }
 
-  setmetatable(buffer, self)
+  setmetatable(self, Buffer)
 
-  return buffer
+  return self
 end
 
 function Buffer:open()

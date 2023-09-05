@@ -6,7 +6,7 @@ IssueView.__index = IssueView
 
 function IssueView.new()
   local self = {
-    buffer = Buffer:new({
+    buffer = Buffer.new({
       name = "GojiIssue",
     }),
     config_category = "issue",
