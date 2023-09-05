@@ -52,7 +52,7 @@ function M.setup()
     buf = function()
       local buff = Buffer.new({
         name = "Hello",
-        kind = "tabnew",
+        kind = "tab",
       })
       buff:open()
       buff:render({ "Hello world" })

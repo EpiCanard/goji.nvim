@@ -9,7 +9,7 @@ Buffer.__index = Buffer
 function Buffer.new(config)
   local self = {
     buf_name = config.name,
-    kind = config.kind or "tabnew",
+    kind = config.kind or "tab",
     buf = nil,
   }
 
@@ -20,7 +20,9 @@ end
 
 function Buffer:open()
   self:_init_buffer()
-  cmd(self.kind)
+  if self.kind == "tab" then
+    cmd("tab split")
+  end
   api.nvim_set_current_buf(self.buf)
   local win = api.nvim_get_current_win()
   api.nvim_set_option_value("number", false, { win = win })
