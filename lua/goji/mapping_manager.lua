@@ -9,6 +9,8 @@ function M.apply_mapping(view)
       action = view.actions[mapping]
     elseif type(mapping) == "function" then
       action = mapping
+    elseif type(mapping) == "table" then
+      action = mapping[1]
     end
 
     if action then

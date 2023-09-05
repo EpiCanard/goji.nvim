@@ -1,6 +1,7 @@
 local Buffer = require("goji.ui.buffer")
 local UIBuilder = require("goji.ui.util.ui_builder")
 local mapping_manager = require("goji.mapping_manager")
+local keybindings = require("goji.ui.components.keybindings")
 
 local IssueView = {}
 IssueView.__index = IssueView
@@ -39,6 +40,9 @@ function IssueView.new()
     end,
   }
 
+  self.action_descriptions = {
+    ["close"] = "Close view",
+  }
   return self
 end
 
@@ -54,6 +58,7 @@ function IssueView:render(data)
 
   self:open()
   local builder = UIBuilder.new()
+  keybindings.render(builder, self)
   builder:append(build_components(data))
   self.buffer:render(builder.components)
   self.buffer:lock()
