@@ -1,9 +1,29 @@
 local Buffer = require("goji.ui.buffer")
+local UIBuilder = require("goji.ui.util.ui_builder")
 local mapping_manager = require("goji.mapping_manager")
 
 local IssueView = {}
 IssueView.__index = IssueView
 
+--[[ Local functions --]]
+local function build_components(data)
+  local title = data["summary"].text
+  local desc = data["description"].richText.adfValue.convertedPlainText.plainText
+  local descs = {}
+  for s in desc:gmatch("[^\r\n]+") do
+    table.insert(descs, s)
+  end
+
+  return {
+    "Title :",
+    title,
+    "",
+    "Description :",
+    unpack(descs),
+  }
+end
+
+--[[ Methods --]]
 function IssueView.new()
   local self = {
     buffer = Buffer.new({
@@ -22,23 +42,6 @@ function IssueView.new()
   return self
 end
 
-function IssueView.build_components(data)
-  local title = data["summary"].text
-  local desc = data["description"].richText.adfValue.convertedPlainText.plainText
-  local descs = {}
-  for s in desc:gmatch("[^\r\n]+") do
-    table.insert(descs, s)
-  end
-
-  return {
-    "Title :",
-    title,
-    "",
-    "Description :",
-    unpack(descs),
-  }
-end
-
 function IssueView:open()
   self.buffer:open()
   mapping_manager.apply_mapping(self)
@@ -50,7 +53,9 @@ function IssueView:render(data)
   end
 
   self:open()
-  self.buffer:render(IssueView.build_components(data))
+  local builder = UIBuilder.new()
+  builder:append(build_components(data))
+  self.buffer:render(builder.components)
   self.buffer:lock()
 end
 
