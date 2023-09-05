@@ -2,6 +2,7 @@ local http = require("goji.request.http")
 local IssueView = require("goji.ui.views.issue")
 local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")
+local git = require("goji.git")
 
 local function get_jira_issue(issue_key)
   local params = {
@@ -27,13 +28,14 @@ local function get_jira_issue(issue_key)
 end
 
 return function(args)
-  if not args[1] then
+  local issue = args[1] or git.get_branch()
+  if not issue then
     print("Missing argument")
-    return
-  end
-  local data = get_jira_issue(args[1])
-  if data then
-    local view = IssueView.new()
-    view:render(data)
+  else
+    local data = get_jira_issue(issue)
+    if data then
+      local view = IssueView.new()
+      view:render(data)
+    end
   end
 end
