@@ -26,6 +26,11 @@ local function log(level)
   end
 end
 
+---@class Log
+---@field error fun(...: string): nil Log error message
+---@field warn fun(...: string): nil Log warning message
+---@field info fun(...: string): nil Log info message
+---@field debug fun(...: string): nil Log debug message
 local M = {}
 
 for k, _ in pairs(levels) do

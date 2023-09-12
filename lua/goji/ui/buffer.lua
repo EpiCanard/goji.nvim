@@ -3,9 +3,13 @@ local api = vim.api
 local fn = vim.fn
 local cmd = vim.cmd
 
+---@class GojiBuffer
+---@field package buf_name string
+---@field package kind string
 local Buffer = {}
 Buffer.__index = Buffer
 
+---@return GojiBuffer
 function Buffer.new(config)
   local self = {
     buf_name = config.name,

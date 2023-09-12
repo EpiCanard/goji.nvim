@@ -4,17 +4,21 @@ local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")
 local git = require("goji.git")
 
+---@param issue_key string i.e:AA-0000
+---@return table?
 local function get_jira_issue(issue_key)
-  local params = {
-    type = "jira",
-    query = issue_queries.get_issue_details(),
-    name = "GetIssueDetails",
-    variables = {
-      cloudId = { type = "ID" },
-      key = { issue_key, type = "String" },
-    },
-  }
-  local result = http.graphql("default", builder.build_request(params, "default"), params.variables, "JiraIssue")
+  local result = builder
+    .build_request({
+      type = "jira",
+      query = issue_queries.get_issue_details(),
+      name = "GetIssueDetails",
+      variables = {
+        cloudId = { type = "ID" },
+        key = { issue_key, type = "String" },
+      },
+      experimentals = "JiraIssue",
+    }, "default")
+    .call()
 
   if not result then
     return
@@ -27,6 +31,8 @@ local function get_jira_issue(issue_key)
   return out
 end
 
+---Command issue
+---@param args table<string>
 return function(args)
   local issue = args[1] or git.get_branch()
   if not issue then

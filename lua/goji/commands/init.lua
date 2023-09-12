@@ -4,6 +4,9 @@ local Buffer = require("goji.ui.buffer")
 local log = require("goji.log")
 local M = {}
 
+---@param commands table<string>
+---@param search string
+---@return table<string>
 local function filter_commmands(commands, search)
   local filtered = {}
 
@@ -16,6 +19,9 @@ local function filter_commmands(commands, search)
   return filtered
 end
 
+---@param arg string
+---@param cmd_line string
+---@return table<string>?
 local function tab_complete(arg, cmd_line)
   local args = vim.split(vim.trim(cmd_line), " ")
   local commands = vim.tbl_keys(M.commands)
@@ -60,6 +66,7 @@ function M.setup()
   }
 end
 
+---@param subcmd string
 function M.goji(subcmd, ...)
   subcmd = subcmd or "issue"
   local args = { ... }

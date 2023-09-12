@@ -1,6 +1,8 @@
 local config = require("goji.config")
 local M = {}
 
+---@param builder UIBuilder
+---@param view GojiView
 function M.render(builder, view)
   local keys = config.values.mappings[view.config_category]
   local out

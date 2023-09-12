@@ -1,5 +1,6 @@
 local M = {}
 
+---@return string
 function M.get_issue_details()
   return [[
     issueByKey(cloudId: $cloudId, key: $key) {

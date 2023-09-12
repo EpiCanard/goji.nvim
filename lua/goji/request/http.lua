@@ -22,6 +22,11 @@ local function vars(variables, conf)
   return result
 end
 
+---@param host_config Host
+---@param query string
+---@param variables table<string, string>
+---@param experimentals string
+---@return table|Job
 local function call_graphql(host_config, query, variables, experimentals)
   local url = parse_url(host_config.url)
   local opts = {
@@ -63,6 +68,11 @@ local function handle_result(resp)
   end
 end
 
+---@param host string
+---@param query string
+---@param variables table<string, string>
+---@param experimentals string
+---@return table?
 function M.graphql(host, query, variables, experimentals)
   local host_config = config.values.hosts[host]
   if not host or not host_config then

@@ -3,10 +3,14 @@ local UIBuilder = require("goji.ui.util.ui_builder")
 local mapping_manager = require("goji.mapping_manager")
 local keybindings = require("goji.ui.components.keybindings")
 
+---@class IssueView:GojiView
 local IssueView = {}
 IssueView.__index = IssueView
 
 --[[ Local functions --]]
+
+---@param data table Data coming from jira
+---@return table<string>
 local function build_components(data)
   local title = data["summary"].text
   local desc = data["description"].richText.adfValue.convertedPlainText.plainText
@@ -25,6 +29,8 @@ local function build_components(data)
 end
 
 --[[ Methods --]]
+
+---@return IssueView
 function IssueView.new()
   local self = {
     buffer = Buffer.new({

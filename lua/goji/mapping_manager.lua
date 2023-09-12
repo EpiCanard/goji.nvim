@@ -1,6 +1,7 @@
 local config = require("goji.config")
 local M = {}
 
+---@param view GojiView
 function M.apply_mapping(view)
   local mappings = config.values.mappings[view.config_category] or {}
   for name, mapping in pairs(mappings) do

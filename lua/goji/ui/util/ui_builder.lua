@@ -1,6 +1,9 @@
+---@class UIBuilder Builder used to build and concat all elements before rendering
+---@field components table<string>
 local UIBuilder = {}
 UIBuilder.__index = UIBuilder
 
+---@return UIBuilder
 function UIBuilder.new()
   local self = {
     components = {},
@@ -11,6 +14,9 @@ function UIBuilder.new()
   return self
 end
 
+---Add one or multiple rows
+---@param row string|table Row(s) to add
+---@return UIBuilder
 function UIBuilder:append(row)
   if type(row) == "string" then
     table.insert(self.components, row)
@@ -24,6 +30,8 @@ function UIBuilder:append(row)
   return self
 end
 
+---Add a new line
+---@return UIBuilder
 function UIBuilder:nl()
   table.insert(self.components, "")
   return self

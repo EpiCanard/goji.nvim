@@ -12,6 +12,7 @@ local function check_dependency(name, url)
   return res
 end
 
+---@return boolean
 local function check_dependencies()
   local deps_loaded = {
     check_dependency("plenary", "https://github.com/nvim-lua/plenary.nvim"),
@@ -24,8 +25,8 @@ local function check_dependencies()
   return loaded
 end
 
--- Setup goji plugin
--- @param user_config Personal config to customize plugin
+---Setup goji plugin
+---@param user_config GojiConfig personal config to customize plugin
 function M.setup(user_config)
   if check_dependencies() then
     config.setup(user_config)

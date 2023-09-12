@@ -12,6 +12,7 @@ local function git(...)
   return job:sync()
 end
 
+---@return string?
 function M.get_branch()
   local result = git("rev-parse", "--abbrev-ref", "HEAD")
   if not result or not result[1] then

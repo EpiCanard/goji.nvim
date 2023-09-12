@@ -1,4 +1,13 @@
+---@class JiraRequest
+---@field name string
+---@field type string
+---@field query string
+---@field mutation string
+---@field variables table
+---@field experimentals string
+
 local config = require("goji.config")
+local http = require("goji.request.http")
 local M = {}
 
 local function build_variables(variables, host)
@@ -23,25 +32,26 @@ local function base_type(type, body)
   return string.format("%s {\n%s\n}", type, body)
 end
 
--- @params request table
--- {
--- name = ""
--- query = ""
--- mutation = ""
--- type = "jira"
--- variables = {cloudId = {type = "ID"}, key =  {"CT-1111", type="String"}}
--- }
-function M.build_request(params, host)
-  local base = params.query and "query" or "mutation"
-  local body = params.query or params.mutation
+---Build graphql request
+---@param request JiraRequest
+---@param host string
+---@return { call: fun(): table }
+function M.build_request(request, host)
+  local base = request.query and "query" or "mutation"
+  local body = request.query or request.mutation
 
-  return string.format(
+  local fullQuery = string.format(
     "%s %s(%s) {\n%s\n}",
     base,
-    params.name,
-    build_variables(params.variables, host),
-    base_type(params.type, body)
+    request.name,
+    build_variables(request.variables, host),
+    base_type(request.type, body)
   )
+  return {
+    call = function()
+      return http.graphql(host, fullQuery, request.variables, request.experimentals)
+    end,
+  }
 end
 
 return M
