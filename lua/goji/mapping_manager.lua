@@ -19,7 +19,7 @@ function M.apply_mapping(view)
         silent = true,
         noremap = true,
         nowait = true,
-        buffer = view.buffer.buf,
+        buffer = view.buffer.buf_id,
       })
     end
   end

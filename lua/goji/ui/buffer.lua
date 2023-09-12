@@ -14,7 +14,7 @@ function Buffer.new(config)
   local self = {
     buf_name = config.name,
     kind = config.kind or "tab",
-    buf = nil,
+    buf_id = nil,
   }
 
   setmetatable(self, Buffer)
@@ -27,7 +27,7 @@ function Buffer:open()
   if self.kind == "tab" then
     cmd("tab split")
   end
-  api.nvim_set_current_buf(self.buf)
+  api.nvim_set_current_buf(self.buf_id)
   local win = api.nvim_get_current_win()
   api.nvim_set_option_value("number", false, { win = win })
   api.nvim_set_option_value("relativenumber", false, { win = win })
@@ -35,15 +35,15 @@ function Buffer:open()
 end
 
 function Buffer:close()
-  api.nvim_buf_delete(self.buf, {})
+  api.nvim_buf_delete(self.buf_id, {})
 end
 
 function Buffer:_init_buffer()
-  if self.buf == nil then
-    self.buf = fn.bufnr(self.buf_name)
-    if self.buf == -1 then
-      self.buf = api.nvim_create_buf(false, false)
-      api.nvim_buf_set_name(self.buf, self.buf_name)
+  if self.buf_id == nil then
+    self.buf_id = fn.bufnr(self.buf_name)
+    if self.buf_id == -1 then
+      self.buf_id = api.nvim_create_buf(false, false)
+      api.nvim_buf_set_name(self.buf_id, self.buf_name)
     end
   end
   self:set_option("buftype", "nofile")
@@ -53,16 +53,16 @@ function Buffer:_init_buffer()
 end
 
 function Buffer:render(content)
-  if self.buf == nil then
+  if self.buf_id == nil then
     log.error("The buffer is not opened")
     return
   end
-  api.nvim_buf_set_lines(self.buf, 0, -1, false, content)
+  api.nvim_buf_set_lines(self.buf_id, 0, -1, false, content)
   self:lock()
 end
 
 function Buffer:set_option(name, value)
-  api.nvim_set_option_value(name, value, { buf = self.buf })
+  api.nvim_set_option_value(name, value, { buf = self.buf_id })
 end
 
 function Buffer:lock()
