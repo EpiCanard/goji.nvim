@@ -1,4 +1,3 @@
-local http = require("goji.request.http")
 local IssueView = require("goji.ui.views.issue")
 local issue_queries = require("goji.request.queries.issue")
 local builder = require("goji.request.query_builder")

@@ -1,7 +1,9 @@
 local issue_command = require("goji.commands.issue")
+local add_host_command = require("goji.commands.add_host")
 local builder = require("goji.request.query_builder")
 local Buffer = require("goji.ui.buffer")
 local log = require("goji.log")
+local config = require("goji.config")
 local M = {}
 
 ---@param commands table<string>
@@ -40,6 +42,10 @@ function M.setup()
 
   M.commands = {
     issue = issue_command,
+    add_host = add_host_command,
+    hosts = function()
+      log.info(vim.inspect(config.values.hosts))
+    end,
     query = function()
       log.info(vim.inspect(builder.build_request({
         type = "jira",
